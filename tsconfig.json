@@ -9,9 +9,9 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "outDir": "dist"
-    },        
+    },                
 
     "exclude": [
-        "mode_modules"
+        "node_modules"
     ]
 }
