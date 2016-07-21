@@ -12,10 +12,12 @@ import * as bodyParser from 'body-parser';
 
 import * as indexRoute from './routes/index';
 
+import { HttpStatusCode } from './models/HttpStatusCode';
+
 /**
  * Server
  */
-class Server {
+export class Server {
 
     public app : express.Application; 
 
@@ -62,7 +64,7 @@ class Server {
      */
     private onError(err : any, req: express.Request, res: express.Response, next: express.NextFunction) {
         var error = new Error('Not found');
-        err.status = 404;        
+        err.status = HttpStatusCode.NotFound;        
         next(err);
     }
 
@@ -118,9 +120,3 @@ class Server {
         this.routes(); 
     }
 }
-
-var server = Server.instance();
-
-server.run(process.env.PORT || 3000);
-
-export = server.app;
