@@ -1,7 +1,9 @@
-///
-
-"use strict";
-
+/**
+ * HTTP Status codes
+ * 
+ * @export
+ * @enum {number}
+ */
 export enum HttpStatusCode {
     /** Informational */
     Continue = 100,

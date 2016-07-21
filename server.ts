@@ -1,24 +1,29 @@
-///
+import * as debugFactory from "debug";
+import * as http from "http";
+import * as express from "express";
+import * as path from "path";
+import * as logger from "morgan";
+import * as bodyParser from "body-parser";
 
+import * as indexRoute from "./routes/index";
 
-"use strict";
+import { HttpStatusCode } from "./models/HttpStatusCode";
 
-import * as debugFactory from 'debug';
-import * as http from 'http';
-import * as express from 'express';
-import * as path from 'path';
-import * as logger from 'morgan';
-import * as bodyParser from 'body-parser';
-
-import * as indexRoute from './routes/index';
-
-import { HttpStatusCode } from './models/HttpStatusCode';
 
 /**
- * Server
+ * Server class
+ * 
+ * @export
+ * @class Server
  */
 export class Server {
 
+    
+    /**
+     * 
+     * 
+     * @type {express.Application}
+     */
     public app : express.Application; 
 
     /**
@@ -42,14 +47,14 @@ export class Server {
      */
     private config() {
         // configure logger
-        this.app.use(logger('dev'));
+        this.app.use(logger("dev"));
 
         // configure body-parser
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
 
         // configure static paths
-        this.app.use(express.static(path.join(__dirname, 'public')));
+        this.app.use(express.static(path.join(__dirname, "public")));
 
         // catch 404 errors
         this.app.use(this.onError);
@@ -63,7 +68,7 @@ export class Server {
      * @return void
      */
     private onError(err : any, req: express.Request, res: express.Response, next: express.NextFunction) {
-        var error = new Error('Not found');
+        var error = new Error("Not found");
         err.status = HttpStatusCode.NotFound;        
         next(err);
     }
@@ -84,7 +89,7 @@ export class Server {
         var index : indexRoute.Index = new indexRoute.Index();
 
         // homepage
-        router.get('/', index.index.bind(index.index));
+        router.get("/", index.index.bind(index.index));
 
         // use router
         this.app.use(router);        
@@ -99,7 +104,7 @@ export class Server {
      * @return void
      */
     public run(port : number) {
-        this.app.set('port', port);
+        this.app.set("port", port);
 
         this.app.listen(port);
     }
