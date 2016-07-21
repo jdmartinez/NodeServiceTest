@@ -7,13 +7,18 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "typings install && tsc"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Juan Diego Martínez",
+  "homepage": "https://github.com/jdmartinez/NodeServiceTest",
+  "license": "Apache-2.0",
   "dependencies": {
     "body-parser": "^1.15.2",
     "debug": "^2.2.0",
     "express": "^4.14.0",
     "morgan": "^1.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jdmartinez/NodeServiceTest.git"
   },
   "devDependencies": {
     "typescript": "^1.8.10",
