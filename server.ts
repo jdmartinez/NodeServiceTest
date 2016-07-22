@@ -8,6 +8,8 @@ import * as bodyParser from "body-parser";
 import * as indexRoute from "./routes/index";
 
 import { HttpStatusCode } from "./models/HttpStatusCode";
+import { AppErrorBase } from "./models/Errors/AppErrorBase";
+import { NotFoundError } from "./models/Errors/NotFoundError";
 
 
 /**
@@ -67,9 +69,16 @@ export class Server {
      * @method onError
      * @return void
      */
-    private onError(err : any, req: express.Request, res: express.Response, next: express.NextFunction) {
-        var error = new Error("Not found");
-        err.status = HttpStatusCode.NotFound;        
+    private onError(err : ApplicationErrorBase, req: express.Request, res: express.Response, next: express.NextFunction) {
+        switch (err.getStatusCode()) {
+            case HttpStatusCode.NotFound:
+                err.status = HttpStatusCode.NotFound;        
+                break;
+        
+            default:
+                break;
+        }
+         
         next(err);
     }
 
