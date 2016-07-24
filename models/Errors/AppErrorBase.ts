@@ -7,7 +7,7 @@ export class AppErrorBase extends Error implements IAppError {
         super(message);
     }
 
-    public GetStatusCode(): HttpStatusCode {
-        return HttpStatusCode.ServerError;
+    public getStatusCode(): HttpStatusCode {
+        return HttpStatusCode.InternalServerError;
     }
 }

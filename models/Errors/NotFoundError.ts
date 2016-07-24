@@ -8,7 +8,7 @@ export class NotFoundError extends AppErrorBase implements IAppError {
         super(message);
     }
 
-    public GetStatusCode(): HttpStatusCode {
+    public getStatusCode(): HttpStatusCode {
         return HttpStatusCode.NotFound;
     }
 }

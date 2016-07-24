@@ -69,17 +69,16 @@ export class Server {
      * @method onError
      * @return void
      */
-    private onError(err : ApplicationErrorBase, req: express.Request, res: express.Response, next: express.NextFunction) {
+    private onError(err : any, req: express.Request, res: express.Response, next: express.NextFunction) {
+        console.error(err);
+        //err.status = HttpStatusCode.NotFound;
+        let notFoundError: NotFoundError = new NotFoundError("Resource not found."); 
+
         switch (err.getStatusCode()) {
             case HttpStatusCode.NotFound:
-                err.status = HttpStatusCode.NotFound;        
+                res.status(HttpStatusCode.NotFound).send(notFoundError.message);
                 break;
-        
-            default:
-                break;
-        }
-         
-        next(err);
+        }   
     }
 
     /**
