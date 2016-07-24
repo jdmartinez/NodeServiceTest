@@ -19,7 +19,7 @@ module Route {
          */
         public index(req : express.Request, res : express.Response, next : express.NextFunction) {
             res.json({
-                title: "Hello Express"
+                title: "Hello Express App"
             });
         }
 
