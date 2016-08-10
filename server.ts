@@ -5,9 +5,9 @@ import * as path from "path";
 import * as logger from "morgan";
 import * as bodyParser from "body-parser";
 
+import { NotFoundError } from "./models/Errors/NotFoundError";
 import { HttpStatusCode } from "./models/HttpStatusCode";
 import { IndexRouter } from "./routes/index";
-
 
 /**
  * Server class
@@ -54,9 +54,6 @@ export class Server {
 
         // configure static paths
         this.app.use(express.static(path.join(__dirname, "public")));
-
-        // catch 404 errors
-        this.app.use(this.onError);
     }
 
     /**
@@ -67,6 +64,7 @@ export class Server {
      * @return void
      */
     private onError(err : Error & { status: number }, req: express.Request, res: express.Response, next: express.NextFunction) {
+        console.log(err);
         res.status(err.status || HttpStatusCode.InternalServerError);
         res.json(err);
     }
@@ -79,9 +77,27 @@ export class Server {
      * @return void
      */
     private routes() {
-        // get router
-        this.app.use("/", IndexRouter.routes()); 
-        
+        // index
+        this.app.use("/", IndexRouter.routes());        
+    }
+
+    /**
+     * Error routes handler
+     *
+     * @class Server
+     * @method routeErrors
+     * @return void
+     */
+    private routeErrors() {
+        // Not found
+        this.app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {
+            let error = new NotFoundError("Resource not found");
+            res.status(HttpStatusCode.NotFound);
+            res.send(error);
+        });
+
+        // catch other errors
+        this.app.use(this.onError);
     }
 
     /**
@@ -107,11 +123,9 @@ export class Server {
      */
     constructor() {
         this.app = express();
-
-        // Configure application
-        this.config();
-
-        // Configure routes
-        this.routes(); 
+        
+        this.config();      // Configure application
+        this.routes();      // Configure routes
+        this.routeErrors(); // Error routes handler
     }
 }

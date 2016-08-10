@@ -1,13 +1,13 @@
-import { IAppError } from "./IAppError";
+import { AppError } from "./AppError";
 import { HttpStatusCode } from "../HttpStatusCode";
 
-export class AppErrorBase extends Error implements IAppError {
+export class AppErrorBase extends Error implements AppError {
 
-    constructor(message: string) {
+    public code: HttpStatusCode;
+
+    constructor(code: HttpStatusCode, message: string) {
         super(message);
+        code = code;        
     }
 
-    public getStatusCode(): HttpStatusCode {
-        return HttpStatusCode.InternalServerError;
-    }
 }

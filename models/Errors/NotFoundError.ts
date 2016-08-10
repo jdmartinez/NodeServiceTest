@@ -1,14 +1,11 @@
-import { IAppError } from "./IAppError";
+import { AppError } from "./AppError";
 import { AppErrorBase } from "./AppErrorBase";
 import { HttpStatusCode } from "../HttpStatusCode";
 
-export class NotFoundError extends AppErrorBase implements IAppError {
+export class NotFoundError extends AppErrorBase implements AppError {
 
     constructor(message: string) {
-        super(message);
+        super(HttpStatusCode.NotFound, message);
     }
 
-    public getStatusCode(): HttpStatusCode {
-        return HttpStatusCode.NotFound;
-    }
 }
