@@ -111,10 +111,12 @@ export class Server {
      * @method start
      * @return void
      */
-    public run(port : number) {
+    public run(port : number) : Server {
         this.app.set("port", port);
 
         this.app.listen(port);
+
+        return this;
     }
 
     /**

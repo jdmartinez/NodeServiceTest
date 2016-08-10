@@ -1,3 +1,4 @@
-import { Server } from './server';
+import { Server } from "./server";
+import { Config } from "./config/config";
 
-Server.instance().run(process.env.PORT || 3000);
+Server.instance().run(Config.port || 3000);

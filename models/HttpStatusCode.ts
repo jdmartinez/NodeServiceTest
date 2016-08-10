@@ -4,7 +4,7 @@
  * @export
  * @enum {number}
  */
-export enum HttpStatusCode {
+export const enum HttpStatusCode {
     /** Informational */
     Continue = 100,
     SwitchingProtocols = 101,
