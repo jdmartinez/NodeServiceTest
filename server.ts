@@ -5,11 +5,8 @@ import * as path from "path";
 import * as logger from "morgan";
 import * as bodyParser from "body-parser";
 
-import * as indexRoute from "./routes/index";
-
 import { HttpStatusCode } from "./models/HttpStatusCode";
-import { AppErrorBase } from "./models/Errors/AppErrorBase";
-import { NotFoundError } from "./models/Errors/NotFoundError";
+import { IndexRouter } from "./routes/index";
 
 
 /**
@@ -69,16 +66,9 @@ export class Server {
      * @method onError
      * @return void
      */
-    private onError(err : any, req: express.Request, res: express.Response, next: express.NextFunction) {
-        console.error(err);
-        //err.status = HttpStatusCode.NotFound;
-        let notFoundError: NotFoundError = new NotFoundError("Resource not found."); 
-
-        switch (err.getStatusCode()) {
-            case HttpStatusCode.NotFound:
-                res.status(HttpStatusCode.NotFound).send(notFoundError.message);
-                break;
-        }   
+    private onError(err : Error & { status: number }, req: express.Request, res: express.Response, next: express.NextFunction) {
+        res.status(err.status || HttpStatusCode.InternalServerError);
+        res.json(err);
     }
 
     /**
@@ -90,17 +80,7 @@ export class Server {
      */
     private routes() {
         // get router
-        let router : express.Router;
-        router = express.Router();
-
-        // create routes
-        var index : indexRoute.Index = new indexRoute.Index();
-
-        // homepage
-        router.get("/", index.index.bind(index.index));
-
-        // use router
-        this.app.use(router);        
+        this.app.use("/", IndexRouter.routes()); 
         
     }
 
