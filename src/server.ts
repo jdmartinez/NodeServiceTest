@@ -1,5 +1,3 @@
-import * as debugFactory from "debug";
-import * as http from "http";
 import * as express from "express";
 import * as path from "path";
 import * as morgan from "morgan";
@@ -20,13 +18,6 @@ import { Logger } from "./Logger";
 export class Server {    
 
     /**
-     * 
-     * 
-     * @type {express.Application}
-     */
-    public app : express.Application;     
-
-    /**
      * Application instance
      * 
      * @class Server
@@ -34,9 +25,16 @@ export class Server {
      * @static
      * @return Returns the new created injector for this app
      */
-    public static instance() : Server {
+    public static instance(): Server {
         return new Server();
     }
+
+    /**
+     * 
+     * 
+     * @type {express.Application}
+     */
+    public app : express.Application;         
 
     /**
      * Configure app
@@ -61,8 +59,7 @@ export class Server {
      * @method onError
      * @return void
      */
-    private onError(err : Error & { status: number }, req: express.Request, res: express.Response, next: express.NextFunction) {
-        console.log(err);
+    private onError(err: Error & { status: number }, req: express.Request, res: express.Response, next: express.NextFunction) {
         res.status(err.status || HttpStatusCode.InternalServerError);
         res.json(err);
     }

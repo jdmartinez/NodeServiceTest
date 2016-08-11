@@ -6,5 +6,5 @@ interface Config {
     port: number;
 }
 
-export const Config = <Config>JSON.parse(fs.readFileSync("config/config.json", "utf-8"));
+export const Config = <Config>JSON.parse(fs.readFileSync("src/config/config.json", "utf-8"));
 
