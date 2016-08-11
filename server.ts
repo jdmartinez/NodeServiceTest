@@ -8,7 +8,7 @@ import * as bodyParser from "body-parser";
 import { NotFoundError } from "./models/Errors/NotFoundError";
 import { HttpStatusCode } from "./models/HttpStatusCode";
 import { IndexRoute } from "./routes/index";
-import { Status } from "./routes/status";
+import { StatusRoute } from "./routes/status";
 
 /**
  * Server class
@@ -78,7 +78,7 @@ export class Server {
      * @return void
      */
     private setupRoutes() {        
-        this.app.use(Status.setup());       // status
+        this.app.use(StatusRoute.setup());       // status
         this.app.use(IndexRoute.setup());   // index        
     }
 

@@ -10,7 +10,7 @@ const DEFAULT_PATH = "/status";
  * @class Health
  * @see Based on https://github.com/palmerabollo/express-ping
  */
-export class Status {     
+export class StatusRoute {     
 
     /**
      * Status route configuration
