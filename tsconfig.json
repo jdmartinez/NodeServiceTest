@@ -9,7 +9,9 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "pretty": true,
+        "allowUnreachableCode": true
     },                
     
     "exclude": [
