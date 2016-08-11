@@ -110,7 +110,13 @@ export class Server {
     public run(port : number) : Server {
         this.app.set("port", port);
 
-        this.app.listen(port);
+        this.app.listen(port, () => {
+            console.log(`
+                ==========================================
+                Server started at http://localhost:${port}                
+                ==========================================
+            `);
+        });
 
         return this;
     }
