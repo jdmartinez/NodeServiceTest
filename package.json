@@ -2,7 +2,7 @@
   "name": "microservice-test",
   "version": "1.0.0",
   "description": "Node and Typescript Test Microservice",
-  "main": "app/app.ts",
+  "main": "src/app.ts",
   "scripts": {
     "check": "npm-check --skip-unused",
     "preinstall": "npm i -g nodemon node-inspector rimraf npm-run-all npm-check",
