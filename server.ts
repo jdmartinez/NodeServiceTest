@@ -2,13 +2,14 @@ import * as debugFactory from "debug";
 import * as http from "http";
 import * as express from "express";
 import * as path from "path";
-import * as logger from "morgan";
+import * as morgan from "morgan";
 import * as bodyParser from "body-parser";
 
 import { NotFoundError } from "./models/Errors/NotFoundError";
 import { HttpStatusCode } from "./models/HttpStatusCode";
 import { IndexRoute } from "./routes/index";
 import { StatusRoute } from "./routes/status";
+import { Logger } from "./Logger";
 
 /**
  * Server class
@@ -16,15 +17,14 @@ import { StatusRoute } from "./routes/status";
  * @export
  * @class Server
  */
-export class Server {
+export class Server {    
 
-    
     /**
      * 
      * 
      * @type {express.Application}
      */
-    public app : express.Application; 
+    public app : express.Application;     
 
     /**
      * Application instance
@@ -46,9 +46,6 @@ export class Server {
      * @return void
      */
     private config() {
-        // configure logger
-        this.app.use(logger("dev"));
-
         // configure body-parser
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));        
@@ -78,7 +75,7 @@ export class Server {
      * @return void
      */
     private setupRoutes() {        
-        this.app.use(StatusRoute.setup());       // status
+        this.app.use(StatusRoute.setup());  // status
         this.app.use(IndexRoute.setup());   // index        
     }
 
@@ -101,6 +98,18 @@ export class Server {
     }
 
     /**
+     * Error routes handler
+     *
+     * @class Server
+     * @method setupErrors
+     * @return void
+     */
+    private setupLogger() {             
+        // configure logger
+        this.app.use(morgan("dev"));        
+    }
+
+    /**
      * Start listening
      * 
      * @class Server
@@ -111,11 +120,7 @@ export class Server {
         this.app.set("port", port);
 
         this.app.listen(port, () => {
-            console.log(`
-                ==========================================
-                Server started at http://localhost:${port}                
-                ==========================================
-            `);
+            Logger.info(`Server started at http://localhost:${port}`);
         });
 
         return this;
@@ -131,7 +136,8 @@ export class Server {
         this.app = express();
         
         this.config();          // Configure application
+        this.setupLogger();     // Logging configuration
         this.setupRoutes();     // Routes configuration
-        this.setupErrors();     // Error routes handler
+        this.setupErrors();     // Error routes handler        
     }
 }

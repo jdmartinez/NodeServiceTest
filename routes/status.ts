@@ -17,9 +17,9 @@ export class StatusRoute {
      * 
      * @static
      * @param {string} [path=""]
-     * @returns void
+     * @returns Router
      */
-    static setup(path:string = "") {
+    static setup(path:string = ""): Router {
 
         path = path || DEFAULT_PATH;
         let pjson = JSON.parse(fs.readFileSync("package.json", "utf-8"))
