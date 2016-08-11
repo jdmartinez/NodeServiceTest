@@ -7,7 +7,8 @@ import * as bodyParser from "body-parser";
 
 import { NotFoundError } from "./models/Errors/NotFoundError";
 import { HttpStatusCode } from "./models/HttpStatusCode";
-import { IndexRouter } from "./routes/index";
+import { IndexRoute } from "./routes/index";
+import { Status } from "./routes/status";
 
 /**
  * Server class
@@ -50,10 +51,10 @@ export class Server {
 
         // configure body-parser
         this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(bodyParser.urlencoded({ extended: false }));        
 
         // configure static paths
-        this.app.use(express.static(path.join(__dirname, "public")));
+        this.app.use(express.static(path.join(__dirname, "public")));        
     }
 
     /**
@@ -76,9 +77,9 @@ export class Server {
      * @method setupRoutes
      * @return void
      */
-    private setupRoutes() {
-        // index
-        this.app.use("/", IndexRouter.routes());        
+    private setupRoutes() {        
+        this.app.use(Status.setup());       // status
+        this.app.use(IndexRoute.setup());   // index        
     }
 
     /**
@@ -92,8 +93,7 @@ export class Server {
         // Not found
         this.app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {            
             let error = new NotFoundError(`Resource ${req.path} not found`);
-            res.status(error.code);
-            res.send(error);
+            res.status(error.code).send(error);
         });
 
         // catch other errors

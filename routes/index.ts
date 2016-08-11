@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
 
-export class IndexRouter {
+export class IndexRoute {
 
-    static routes(): Router {
+    static setup(): Router {
         
         return Router()
             .get("/", async(req: Request, res: Response) => {
