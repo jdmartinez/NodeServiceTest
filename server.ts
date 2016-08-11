@@ -91,8 +91,9 @@ export class Server {
     private routeErrors() {
         // Not found
         this.app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {
-            let error = new NotFoundError("Resource not found");
-            res.status(HttpStatusCode.NotFound);
+            let error = new NotFoundError("Resource not found");   
+            console.log(error.toString());           
+            res.status(error.code);
             res.send(error);
         });
 
