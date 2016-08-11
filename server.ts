@@ -73,10 +73,10 @@ export class Server {
      * Configure routes
      *
      * @class Server
-     * @method routes
+     * @method setupRoutes
      * @return void
      */
-    private routes() {
+    private setupRoutes() {
         // index
         this.app.use("/", IndexRouter.routes());        
     }
@@ -85,10 +85,10 @@ export class Server {
      * Error routes handler
      *
      * @class Server
-     * @method routeErrors
+     * @method setupErrors
      * @return void
      */
-    private routeErrors() {
+    private setupErrors() {
         // Not found
         this.app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {            
             let error = new NotFoundError(`Resource ${req.path} not found`);
@@ -130,8 +130,8 @@ export class Server {
     constructor() {
         this.app = express();
         
-        this.config();      // Configure application
-        this.routes();      // Configure routes
-        this.routeErrors(); // Error routes handler
+        this.config();          // Configure application
+        this.setupRoutes();     // Routes configuration
+        this.setupErrors();     // Error routes handler
     }
 }
