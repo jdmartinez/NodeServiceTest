@@ -12,8 +12,8 @@
         "outDir": "dist",
         "pretty": true,
         "allowUnreachableCode": true
-    },                
-    
+    },
+
     "exclude": [
         "node_modules"
     ]
