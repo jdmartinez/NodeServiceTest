@@ -5,21 +5,22 @@ import * as bodyParser from "body-parser";
 
 import { NotFoundError } from "./models/Errors/NotFoundError";
 import { HttpStatusCode } from "./models/HttpStatusCode";
+import { RouteLoader } from "./RouteLoader";
 import { IndexRoute } from "./routes/index";
 import { StatusRoute } from "./routes/status";
 import { Logger } from "./Logger";
 
 /**
  * Server class
- * 
+ *
  * @export
  * @class Server
  */
-export class Server {    
+export class Server {
 
     /**
      * Application instance
-     * 
+     *
      * @class Server
      * @method instance
      * @static
@@ -30,11 +31,11 @@ export class Server {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @type {express.Application}
      */
-    public app : express.Application;         
+    public app : express.Application;
 
     /**
      * Configure app
@@ -46,10 +47,10 @@ export class Server {
     private config() {
         // configure body-parser
         this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));        
+        this.app.use(bodyParser.urlencoded({ extended: false }));
 
         // configure static paths
-        this.app.use(express.static(path.join(__dirname, "public")));        
+        this.app.use(express.static(path.join(__dirname, "public")));
     }
 
     /**
@@ -71,9 +72,13 @@ export class Server {
      * @method setupRoutes
      * @return void
      */
-    private setupRoutes() {        
-        this.app.use(StatusRoute.setup());  // status
-        this.app.use(IndexRoute.setup());   // index        
+    private setupRoutes() {
+        //this.app.use([
+        //    StatusRoute.setup(),
+        //    IndexRoute.setup()
+        //]);
+
+        this.app.use(new RouteLoader("routes").discover());
     }
 
     /**
@@ -85,7 +90,7 @@ export class Server {
      */
     private setupErrors() {
         // Not found
-        this.app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {            
+        this.app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {
             let error = new NotFoundError(`Resource ${req.path} not found`);
             res.status(error.code).send(error);
         });
@@ -101,14 +106,14 @@ export class Server {
      * @method setupErrors
      * @return void
      */
-    private setupLogger() {             
+    private setupLogger() {
         // configure logger
-        this.app.use(morgan("dev"));        
+        this.app.use(morgan("dev"));
     }
 
     /**
      * Start listening
-     * 
+     *
      * @class Server
      * @method start
      * @return void
@@ -125,16 +130,16 @@ export class Server {
 
     /**
      * Constructor
-     * 
+     *
      * @class Server
      * @constructor
      */
     constructor() {
         this.app = express();
-        
+
         this.config();          // Configure application
         this.setupLogger();     // Logging configuration
         this.setupRoutes();     // Routes configuration
-        this.setupErrors();     // Error routes handler        
+        this.setupErrors();     // Error routes handler
     }
 }

@@ -1,28 +1,29 @@
+import { BaseRoute } from "../core/BaseRoute";
 import { Router, Request, Response } from "express";
 
 /**
  * Index route class
- * 
+ *
  * @export
  * @class IndexRoute
  */
-export class IndexRoute {
+export class IndexRoute extends BaseRoute {
 
     /**
      * index route configuration
-     * 
+     *
      * @static
      * @returns Router
      */
-    static setup(): Router {
-        
+    //@Get("/")
+    public get(): Router {
+
         return Router()
-            .get("/", async(req: Request, res: Response) => {
+            .use(async(req: Request, res: Response) => {
                 res.json({
                     title: "Hello Express App"
-                });
-            });
-
+                })
+            );
     }
 
 }
