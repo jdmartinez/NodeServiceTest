@@ -1,28 +1,27 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { Router } from "express";
-import { BaseRoute } from "./core/BaseRoute";
+import { Application, Router } from "express";
+import { BaseRoute } from "./routes/BaseRoute";
 
 export class RouteLoader {
 
-    private dir: string;
-    private routeList: Array<Router>;
+    private app: Application;
 
-    get routes(): Array<Router> { return this.routeList; }
-
-    constructor(dir: string = "./routes") {
-        this.dir = dir;
+    constructor(app: Application) {
+        this.app = app;
     }
 
-    public discover(): Array<Router> {
-        this.routeList = this.load(this.dir);
-        return this.routes;
+    public discover(dir: string | Array<string>): RouteLoader {
+        if (typeof dir === "string") {
+            this.load(dir);
+        } else if (dir instanceof Array) {
+            (<Array<string>>dir).forEach(d => this.load(d));
+        }
+        return this;
     }
 
-    private load(dir: string): Array<Router> {
-        let routers: Array<Router> = new Array<Router>();
-
+    private load(dir: string) {
         let folder = path.join(__dirname, dir);
         let files = fs.readdirSync(folder);
 
@@ -32,17 +31,14 @@ export class RouteLoader {
                 let stat = fs.statSync(nextLv);
 
                 if (stat.isDirectory()) {
-                    routers.concat(this.load(nextLv));
+                    this.load(nextLv);
                 }
             } else {
-                let obj: BaseRoute = <BaseRoute>require(path.join(folder, file));
-                let route = "/" + file.replace(/\.js$/, "");
-
-                routers.push(obj.setup());
+                //require(path.join(folder, file));
+                let obj = <BaseRoute>require(path.join(folder, file));
+                let route  = <BaseRoute>Object.create(obj);
             }
         });
-
-        return routers;
     }
 
 }

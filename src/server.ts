@@ -3,11 +3,10 @@ import * as path from "path";
 import * as morgan from "morgan";
 import * as bodyParser from "body-parser";
 
+import { Injector } from "./core/injection/Injector";
 import { NotFoundError } from "./models/Errors/NotFoundError";
 import { HttpStatusCode } from "./models/HttpStatusCode";
 import { RouteLoader } from "./RouteLoader";
-import { IndexRoute } from "./routes/index";
-import { StatusRoute } from "./routes/status";
 import { Logger } from "./Logger";
 
 /**
@@ -78,7 +77,7 @@ export class Server {
         //    IndexRoute.setup()
         //]);
 
-        this.app.use(new RouteLoader("routes").discover());
+        new RouteLoader(this.app).discover("routes");
     }
 
     /**
@@ -136,6 +135,8 @@ export class Server {
      */
     constructor() {
         this.app = express();
+
+        Injector.register("Express.Application", this.app);
 
         this.config();          // Configure application
         this.setupLogger();     // Logging configuration
